@@ -1,0 +1,2 @@
+rootProject.name='RecogTest'
+include ':app', ':recog-0.0.1-debug'
