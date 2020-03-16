@@ -1,30 +1,48 @@
 package org.idpass.recogtest;
 
+import android.content.res.AssetFileDescriptor;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
 import org.idpass.lib.Recog;
+import org.idpass.offcard.misc.Dump;
+
+import android.content.res.AssetManager;
+
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.security.MessageDigest;
+import java.util.Arrays;
+
+import at.favre.lib.bytes.Bytes;
+
 
 public class SecondFragment extends Fragment {
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-
-        Log.i("org.idpass","before constructor");
         Recog recog = new Recog();
-        Log.i("org.idpass","after constructor");
-        String msg = recog.stringFromJNI();
-        Log.i("org.idpass","after API call");
+
+        float[] vec128d = recog.compute("/data/local/tmp/me.jpg");
+        int nlen = vec128d.length;
+        Log.i("org.idpass","nlen = " + nlen);
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_second, container, false);
